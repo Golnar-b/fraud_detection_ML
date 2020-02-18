@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.metrics import silhouette_score
 from sklearn.decomposition import PCA
 import pickle
-
+import yaml
 
 def load_clean_data(input_data_name):
     orig_data = pd.read_csv(input_data_name)
@@ -106,11 +106,14 @@ def detect_anomaly_save_result(X_scaled_reduced, X_clusters_centers, clust_label
     result.to_csv(output_file_name)
     
     
-def run_model(input_data, n_clusters):
-    orig_data, model_data = load_clean_data(input_data)
+def run_model(input_parameters_file):
+    f = open(input_parameters_file, "r")
+    parameters = yaml.load(f)
+    f.close()
+    orig_data, model_data = load_clean_data(parameters['input_data'])
     do_clusters_elbow_plot(model_data)
     X_scaled_reduced, PCA_df = scale_data_select_features(model_data)
-    train_and_save_model(X_scaled_reduced, n_clusters, '../model/finalized_model.sav')
-    model_clustered_data, X_clusters_centers, clust_labels = load_model_do_evaluate_cluster(model_data, n_clusters, X_scaled_reduced, PCA_df, '../model/finalized_model.sav')   
+    train_and_save_model(X_scaled_reduced, parameters['n_clusters'], '../model/finalized_model.sav')
+    model_clustered_data, X_clusters_centers, clust_labels = load_model_do_evaluate_cluster(model_data, parameters['n_clusters'], X_scaled_reduced, PCA_df, '../model/finalized_model.sav')   
     model_clustered_data.to_csv('../output/clustered_data.csv')
     detect_anomaly_save_result(X_scaled_reduced, X_clusters_centers, clust_labels, orig_data, '../output/anomaly_detected_result.csv')
