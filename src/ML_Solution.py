@@ -86,3 +86,21 @@ def load_model_do_evaluate_cluster(model_data, n_clusters, X_scaled_reduced, PCA
     plt.ylabel(PCA_df[1][1])
     plt.show()
     return(model_clustered_data, X_clusters_centers, clust_labels)
+    
+    
+def detect_anomaly_save_result(X_scaled_reduced, X_clusters_centers, clust_labels, orig_data, output_file_name):
+    #calculate the distance to the cluster centroid for each point
+    distance = [np.linalg.norm(x-y) for x,y in zip(X_scaled_reduced, X_clusters_centers[clust_labels])]
+    
+    #create predictions based on distance
+    km_y_pred = np.array(distance)
+    km_y_pred[distance>=np.percentile(distance, 95)] = 1
+    km_y_pred[distance<np.percentile(distance, 95)] = 0
+    km_y_pred.sum()
+    
+    data_init = orig_data.reset_index()
+    data_pred = pd.DataFrame(km_y_pred).reset_index()
+    data_pred.columns=['index', 'anomaly_detected']
+    result = pd.merge(data_init, data_pred, on='index')
+    
+    result.to_csv(output_file_name)
