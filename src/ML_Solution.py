@@ -59,3 +59,48 @@ def scale_data_select_features(model_data):
 def train_and_save_model(X_scaled_reduced, n_clusters, model_filename):
     kmeans = KMeans(n_clusters=n_clusters, random_state=42).fit(X_scaled_reduced)
     pickle.dump(kmeans, open(model_filename, 'wb'))
+    
+    
+def load_model_do_evaluate_cluster(model_data, n_clusters, X_scaled_reduced, PCA_df, model_filename):
+    #load model
+    kmeans = pickle.load(open(model_filename, 'rb'))
+    
+    #compute cluster centers and predict cluster indices
+    X_clusters_centers = kmeans.cluster_centers_
+    clust_labels = kmeans.predict(X_scaled_reduced)
+    
+    #evaluate clustering output
+    score = silhouette_score (X_scaled_reduced, clust_labels, metric='euclidean')
+    print ("For n_clusters = {}, silhouette score is {})".format(n_clusters, score))
+        
+    #add labels to model_data
+    model_clustered_data = model_data
+    model_clustered_data.insert((model_clustered_data.shape[1]),'kmeans', pd.DataFrame(clust_labels))
+
+    #plot the clusters with scatter digram
+    LABEL_COLOR_MAP = {0 : 'g', 1 : 'r', 2:'b', 3: 'c', 4: 'k', 5: 'y', 6: 'w', 7:'m'}
+    label_color = [LABEL_COLOR_MAP[l] for l in clust_labels]
+    plt.figure(figsize = (9, 7))
+    plt.scatter(X_scaled_reduced[:, 0], X_scaled_reduced[:, 1], c= label_color, alpha=0.5)
+    plt.xlabel(PCA_df[1][0]) 
+    plt.ylabel(PCA_df[1][1])
+    plt.show()
+    return(model_clustered_data, X_clusters_centers, clust_labels)
+    
+    
+def detect_anomaly_save_result(X_scaled_reduced, X_clusters_centers, clust_labels, orig_data, output_file_name):
+    #calculate the distance to the cluster centroid for each point
+    distance = [np.linalg.norm(x-y) for x,y in zip(X_scaled_reduced, X_clusters_centers[clust_labels])]
+    
+    #create predictions based on distance
+    km_y_pred = np.array(distance)
+    km_y_pred[distance>=np.percentile(distance, 95)] = 1
+    km_y_pred[distance<np.percentile(distance, 95)] = 0
+    km_y_pred.sum()
+    
+    data_init = orig_data.reset_index()
+    data_pred = pd.DataFrame(km_y_pred).reset_index()
+    data_pred.columns=['index', 'anomaly_detected']
+    result = pd.merge(data_init, data_pred, on='index')
+    
+    result.to_csv(output_file_name)
