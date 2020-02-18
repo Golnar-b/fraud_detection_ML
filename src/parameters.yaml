@@ -1,0 +1,3 @@
+input_data : "../data/customers_records.csv"
+n_clusters : 2
+
