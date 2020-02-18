@@ -20,6 +20,21 @@ def load_clean_data(input_data_name):
     return(orig_data, model_data)
 
 
+def do_clusters_elbow_plot(model_data):
+    #running a k-means model on clusters varying from 1 to 10 and generate an elbow curve
+    X_scaled = MinMaxScaler().fit_transform(np.array(model_data).astype(np.float))
+    
+    clust = range(1, 10)
+    kmeans_all = [KMeans(n_clusters=i, random_state=42) for i in clust]
+    elbow_score = [kmeans_all[i].fit(X_scaled).score(X_scaled) for i in range(len(kmeans_all))]
+    
+    plt.plot(clust, elbow_score)
+    plt.xlabel('Number of Clusters')
+    plt.ylabel('Score')
+    plt.title('Elbow Curve')
+    plt.show()
+
+
 def scale_data_select_features(model_data):
     X = np.array(model_data).astype(np.float)
     X_scaled = StandardScaler().fit_transform(X)
