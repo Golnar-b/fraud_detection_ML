@@ -1,12 +1,13 @@
 # Machine Learning Model for Fraud Detection
 
-In this project, data is extracted from live CRM/ Marketing platform comprising of anonymous 10K records. This feature/Training set is sampled from a much larger training set for Machine Learning model training. To solve this challenge you are free to use any Python packages from available ML toolkits such as Sklearn, H2O, Tensorflow etc. or Java, Scala.
-This is unlabeled or unclassified data using which we provide an approach to:
- 
-* Train model for clustering data with 3 main categories of features related to Account, Personal ID, and Redemption Activity 
-* Model Evaluation (clustering performance)
-* Anomaly Detection over all clsuters (i.e., detect suspicious customers that are possibly doing fraud transactions)
- 
+In this project, we investigate the fraude events related to the customers data, where data is extracted from live CRM/ Marketing platform comprising of anonymous 10K records. 
+This training set is unlabelled and is sampled from a much larger dataset. 
+To solve this challenge, we use Python packages from Sklearn. To complete the project, the following steps are considered.
+
+Data Visulaization and Engineering using PCA
+Training the model for clustering data with 3 main categories of features related to Account, Personal ID, and Redemption Activity
+Model Evaluation (clustering performance)
+Anomaly Detection over all clsuters (i.e., detect suspicious customers that are possibly doing fraud transactions)
 # Project Inputs
 
 * Customers Database: customers_records.csv
@@ -14,12 +15,11 @@ This is unlabeled or unclassified data using which we provide an approach to:
 # Project Outpus
 
 * ML model for clustering: model/finalized_model.sav
-* data with labeled output as assigned to each cluster: output/clustered_data.csv
-* data with anomaly detection results, i.e., outliers of all clusters: output/anomaly_detected_result.csv
-
+* Dataset with labeled output as assigned to each cluster: output/clustered_data.csv
+* Dataset with anomaly detection results, i.e., outliers of all clusters: output/anomaly_detected_result.csv
 # Project User parameters Selection
 
-* User can adjust the required arguments about number of clusters for clustering model
+* User can adjust the required arguments about forecast horizon, BU, type of forecast model (whether or not include MT as a parameter, or other predictors for GOGI), start year of training the model, and confidence interval of prediction in parameters.yaml
 
 # Run Instruction
 
