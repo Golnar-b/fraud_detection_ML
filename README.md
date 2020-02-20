@@ -4,10 +4,10 @@ In this project, we investigate the fraude events related to the customers data,
 This training set is unlabelled and is sampled from a much larger dataset. 
 To solve this challenge, we use Python packages from Sklearn. To complete the project, the following steps are considered.
 
-Data Visulaization and Engineering using PCA
-Training the model for clustering data with 3 main categories of features related to Account, Personal ID, and Redemption Activity
-Model Evaluation (clustering performance)
-Anomaly Detection over all clsuters (i.e., detect suspicious customers that are possibly doing fraud transactions)
+* Data Visulaization and Engineering using PCA
+* Training the model for clustering data with 3 main categories of features related to Account, Personal ID, and Redemption Activity
+* Model Evaluation (performance of clustering)
+* Anomaly Detection over all clsuters (i.e., detect suspicious customers that are possibly doing fraud transactions)
 # Project Inputs
 
 * Customers Database: customers_records.csv
