@@ -19,7 +19,7 @@ To solve this challenge, we use Python packages from Sklearn. To complete the pr
 * Dataset with anomaly detection results, i.e., outliers of all clusters: output/anomaly_detected_result.csv
 # Project User parameters Selection
 
-* User can adjust the required arguments about forecast horizon, BU, type of forecast model (whether or not include MT as a parameter, or other predictors for GOGI), start year of training the model, and confidence interval of prediction in parameters.yaml
+* User can adjust the required arguments about number of clusters and update data file in parameters.yaml
 
 # Run Instruction
 
